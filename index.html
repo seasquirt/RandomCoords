@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Coordinate Generator</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <!-- Add Material Icons stylesheet -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Add Leaflet.IconMaterial CSS -->
+  <link href="css/leaflet.icon-material.css" rel="stylesheet">
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Add Leaflet.IconMaterial JS -->
+  <script src="js/leaflet.icon-material.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Random Coordinate Generator</h1>
+    
+    <!-- Number of coordinates input (default 1) -->
+    <div class="input-group">
+      <label for="count">Number of Coordinates:</label>
+      <input type="number" id="count" value="1" min="1" inputmode="numeric">
+    </div>
+    
+    <!-- Radius input with unit and mode dropdown -->
+    <div class="input-group">
+      <label for="radius">Radius:</label>
+      <input type="number" id="radius" placeholder="Enter radius" value="1" min="0.0001" inputmode="numeric">
+      <select id="radius-unit">
+        <option value="kilometers" selected>Kilometers</option>
+        <option value="meters">Meters</option>
+        <option value="miles">Miles</option>
+      </select>
+      <select id="distance-mode">
+        <option value="within" selected>Within</option>
+        <option value="exact">Exact</option>
+      </select>
+    </div>
+    
+    <!-- Centered From My Location button -->
+    <div class="input-group centered">
+      <button id="use-location">From My Location</button>
+    </div>
+    
+    <!-- Map container -->
+    <div id="map"></div>
+    
+    <!-- Address input group (below map) -->
+    <div class="input-group">
+      <label for="address">Address:</label>
+      <input type="text" id="address" placeholder="Enter an address">
+      <button id="use-address">Use Address</button>
+    </div>
+    
+    <!-- Map type selector -->
+    <div class="input-group">
+      <label for="map-type">Map Type:</label>
+      <select id="map-type">
+        <option value="satellite" selected>Satellite</option>
+        <option value="street">Street Map</option>
+      </select>
+    </div>
+    
+    <!-- Centered location list -->
+    <div id="results"></div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'92130e290ce51379',t:'MTc0MjExNTU3NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+</body>
+</html>
