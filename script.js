@@ -26,23 +26,22 @@ document.addEventListener("DOMContentLoaded", () => {
   
     // Define custom Material Icons
     const userLocationIcon = L.IconMaterial.icon({
-        icon: 'person',         // Icon representing the user
-        iconColor: 'white',                // White for high visibility
-        markerColor: 'rgba(70, 130, 180, 0.5)',  // Soft steel blue with transparency
-        outlineColor: 'white',             // White outline for definition
-        outlineWidth: 1,
-        iconSize: [31, 42]                 // Standard size
-      });
-      
-      // Custom icon for generated coordinates
-      const generatedLocationIcon = L.IconMaterial.icon({
-        icon: 'not_listed_location',               // Icon for generated points
-        iconColor: 'white',                // White for high visibility
-        markerColor: 'rgba(255, 82, 82, 0.5)',   // Soft orange with transparency
-        outlineColor: 'white',             // White outline for definition
-        outlineWidth: 1,
-        iconSize: [31, 42]                 // Standard size
-      });
+      icon: 'person',         // Icon representing the user
+      iconColor: 'white',                // White for high visibility
+      markerColor: 'rgba(70, 130, 180, 0.5)',  // Soft steel blue with transparency
+      outlineColor: 'white',             // White outline for definition
+      outlineWidth: 1,
+      iconSize: [31, 42]                 // Standard size
+    });
+  
+    const generatedLocationIcon = L.IconMaterial.icon({
+      icon: 'not_listed_location',       // Icon for generated points
+      iconColor: 'white',                // White for high visibility
+      markerColor: 'rgba(255, 82, 82, 0.5)',   // Soft orange with transparency
+      outlineColor: 'white',             // White outline for definition
+      outlineWidth: 1,
+      iconSize: [31, 42]                 // Standard size
+    });
   
     // Map type switcher
     document.getElementById("map-type").addEventListener("change", function() {
@@ -95,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         map.setView([lat, lon], 13);
-        // Use custom icon without popup
         L.marker([lat, lon], { icon: userLocationIcon }).addTo(map);
         addCircle(lat, lon);
       }, () => {
@@ -123,7 +121,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("radius").addEventListener("input", vibrate);
     document.getElementById("address").addEventListener("input", vibrate);
   
-    // Modified generateCoordinates function
+    // Function to detect if the user is on a mobile device
+    function isMobileDevice() {
+      return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+  
+    // Function to generate random coordinates and handle map integration
     function generateCoordinates(lat, lon) {
       const radiusVal = parseFloat(document.getElementById("radius").value);
       const unit = document.getElementById("radius-unit").value;
@@ -156,6 +159,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // Add new circle
       addCircle(lat, lon);
   
+      // Determine if on mobile device
+      const isMobile = isMobileDevice();
+  
       // Generate random points
       for (let i = 0; i < count; i++) {
         const randomCoords = randomPoint(lat, lon, radiusMeters, exact);
@@ -163,12 +169,19 @@ document.addEventListener("DOMContentLoaded", () => {
         L.marker(randomCoords, { icon: generatedLocationIcon }).addTo(map)
           .bindPopup(`Location ${i + 1}<br>Lat: ${randomCoords[0].toFixed(5)}, Lon: ${randomCoords[1].toFixed(5)}`);
   
+        // Format coordinates for URL with high precision
+        const latStr = randomCoords[0].toFixed(10);
+        const lonStr = randomCoords[1].toFixed(10);
+        const mapsUrl = isMobile
+          ? `geo:${latStr},${lonStr}`
+          : `https://www.google.com/maps?q=${latStr},${lonStr}`;
+  
         const openMapBtn = document.createElement("button");
         openMapBtn.className = "open-map-btn";
-        openMapBtn.innerText = "Open in Google Maps";
+        openMapBtn.innerText = "Open in Maps";
         openMapBtn.addEventListener("click", () => {
           vibrate();
-          window.open(`https://www.google.com/maps?q=${randomCoords[0]},${randomCoords[1]}`, "_blank");
+          window.open(mapsUrl, "_blank");
         });
   
         const coordDiv = document.createElement("div");
@@ -180,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   
-    // Helper functions (unchanged)
+    // Helper functions for coordinate calculations
     function toRadians(degrees) {
       return degrees * Math.PI / 180;
     }
