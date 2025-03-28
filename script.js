@@ -118,7 +118,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("map-type").addEventListener("change", vibrate);
   document.getElementById("count").addEventListener("input", vibrate);
   document.getElementById("radius").addEventListener("input", vibrate);
-  document.getElementById("location-input").addEventListener("input", vibrate);
+  document.getElementById("input-type").addEventListener("input", vibrate);
+  document.getElementById("set-location").addEventListener("click", vibrate);
 
   // Update placeholder based on input type selection
   document.getElementById("input-type").addEventListener("change", function() {
